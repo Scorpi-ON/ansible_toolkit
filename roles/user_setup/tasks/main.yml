@@ -1,0 +1,20 @@
+---
+- name: Ensure username is set
+  ansible.builtin.assert:
+    that: user_setup_name | length > 0
+    fail_msg: user_setup_name is required
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ user_setup_name }}"
+    shell: "{{ user_setup_shell }}"
+    groups: "{{ user_setup_groups }}"
+    append: true
+    create_home: true
+
+- name: Add user to sudoers
+  community.general.sudoers:
+    name: "{{ user_setup_name }}"
+    user: "{{ user_setup_name }}"
+    commands: ALL
+  when: user_setup_sudo | bool

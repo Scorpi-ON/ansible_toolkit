@@ -1,0 +1,45 @@
+---
+- name: Enable AUR and Chaotic-AUR on Arch
+  when: ansible_facts['pkg_mgr'] == 'pacman'
+  block:
+    - name: Check if Chaotic-AUR key already exists
+      ansible.builtin.command: "pacman-key --list-keys {{ chaotic_aur_keyid }}"
+      register: chaotic_aur_key_check
+      changed_when: false
+      failed_when: false
+
+    - name: Receive Chaotic-AUR key (if missing)
+      ansible.builtin.command: >
+        "pacman-key --recv-key {{ chaotic_aur_keyid }} --keyserver {{ chaotic_aur_keyserver }}"
+      register: chaotic_aur_key_recieve
+      changed_when: "'not changed' in chaotic_aur_key_recieve.stdout"
+      when: chaotic_aur_key_check.rc != 0
+
+    - name: Locally sign Chaotic-AUR key
+      ansible.builtin.command: "pacman-key --lsign-key {{ chaotic_aur_keyid }}"
+      register: chaotic_aur_lsign
+      changed_when: >
+        "'locally signed' in (chaotic_aur_lsign.stdout | lower) or 'locally signed' in (chaotic_aur_lsign.stderr | lower)"
+
+    - name: Install Chaotic-AUR keyring and mirrorlist
+      community.general.pacman:
+        name:
+          - "{{ chaotic_aur_keyring_url }}"
+          - "{{ chaotic_aur_mirrorlist_url }}"
+
+    - name: Ensure Chaotic-AUR repo is present in /etc/pacman.conf
+      ansible.builtin.blockinfile:
+        path: /etc/pacman.conf
+        prepend_newline: true
+        block: |
+          [chaotic-aur]
+          Include = /etc/pacman.d/chaotic-mirrorlist
+
+    - name: Update system packages (pacman -Syu)
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+
+    - name: Install yay for AUR
+      community.general.pacman:
+        name: yay

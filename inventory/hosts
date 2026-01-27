@@ -1,0 +1,5 @@
+[wsl]
+localhost ansible_connection=local
+
+[vds]
+scorpion_hostvds

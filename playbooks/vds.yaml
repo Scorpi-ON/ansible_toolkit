@@ -1,0 +1,22 @@
+---
+- name: VDS setup
+  hosts: vds
+  become: true
+
+  pre_tasks:
+    - name: Set a hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
+
+    - name: Set a timezone
+      community.general.timezone:
+        name: "{{ timezone_name }}"
+
+  roles:
+    - base_packages
+    - user_setup
+    - shell_fish
+    - ssh_client
+    - sshd
+    - chaotic_aur
+    - pay_respects

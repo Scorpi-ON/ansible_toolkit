@@ -1,0 +1,11 @@
+---
+ansible_user: root
+
+timezone_name: Europe/Moscow
+scorpion_user:
+  name: scorpion
+  shell: /bin/fish
+  groups: [docker]
+vds:
+  host: <YOUR HOST>
+  identity_file: ~/.ssh/hostvds_id_ed25519

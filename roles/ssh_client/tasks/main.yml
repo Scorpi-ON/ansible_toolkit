@@ -1,0 +1,21 @@
+---
+- name: Ensure ssh_client_user is set
+  ansible.builtin.assert:
+    that: ssh_client_user | length > 0
+    fail_msg: ssh_client_user is required
+
+- name: Ensure user's .ssh directory exists
+  ansible.builtin.file:
+    path: "{{ ssh_client_dir }}"
+    state: directory
+    owner: "{{ ssh_client_user }}"
+    group: "{{ ssh_client_user }}"
+    mode: "0700"
+
+- name: Install SSH client config
+  ansible.builtin.template:
+    src: config.j2
+    dest: "{{ ssh_client_dir }}/config"
+    owner: "{{ ssh_client_user }}"
+    group: "{{ ssh_client_user }}"
+    mode: "0600"

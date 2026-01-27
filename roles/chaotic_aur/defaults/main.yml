@@ -1,0 +1,5 @@
+---
+chaotic_aur_keyid: "3056513887B78AEB"
+chaotic_aur_keyserver: "keyserver.ubuntu.com"
+chaotic_aur_keyring_url: "https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst"
+chaotic_aur_mirrorlist_url: "https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst"

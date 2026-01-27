@@ -1,0 +1,16 @@
+---
+- name: Update package cache
+  ansible.builtin.package:
+    update_cache: true
+  when: base_packages_update_cache | bool
+
+- name: Upgrade installed packages # noqa: package-latest
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+  when: base_packages_upgrade | bool
+
+- name: Install base packages
+  ansible.builtin.package:
+    name: "{{ base_packages_list }}"
+  when: base_packages_list | length > 0

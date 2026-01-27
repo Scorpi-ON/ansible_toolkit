@@ -1,0 +1,6 @@
+---
+roles:
+  - name: jahrik.yay
+
+collections:
+  - name: community.general

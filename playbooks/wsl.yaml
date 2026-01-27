@@ -1,0 +1,20 @@
+---
+- name: WSL setup
+  hosts: wsl
+  become: true
+
+  pre_tasks:
+    - name: Set a hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
+
+    - name: Generate locale
+      community.general.locale_gen:
+        name: [en_US.UTF-8]
+
+  roles:
+    - base_packages
+    - user_setup
+    - shell_fish
+    - ssh_client
+    - chaotic_aur

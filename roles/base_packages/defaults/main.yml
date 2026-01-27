@@ -1,0 +1,4 @@
+---
+base_packages_update_cache: true
+base_packages_upgrade: true
+base_packages_list: []

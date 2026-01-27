@@ -1,0 +1,7 @@
+---
+pay_respects_user: ""
+pay_respects_shell: "/bin/bash"
+pay_respects_home: "/home/{{ pay_respects_user }}"
+pay_respects_bin_path: "{{ pay_respects_home }}/.local/bin"
+pay_respects_url: https://raw.githubusercontent.com/iffse/pay-respects/main/install.sh
+pay_respects_install_script: /tmp/pay-respects-install.sh
