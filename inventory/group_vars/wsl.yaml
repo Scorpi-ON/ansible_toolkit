@@ -4,6 +4,7 @@ hostname: wsl
 base_packages_list:
   - sudo
   - micro
+  - less
   - base-devel
   - openssh
   - keychain
@@ -11,6 +12,7 @@ base_packages_list:
   - zoxide
   - trash-cli
   - direnv
+  - uv
   - fish
 
 user_setup_name: "{{ scorpion_user.name }}"

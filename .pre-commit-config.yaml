@@ -1,0 +1,15 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: ansible-lint
+        name: ansible-lint (staged Ansible YAML)
+        entry: >
+          bash -c '
+          if [ "$#" -eq 0 ];
+            then exit 0;
+          fi;  ANSIBLE_LINT_NODEPS=1  ANSIBLE_LINT_SKIP_SCHEMA_UPDATE=1  ansible-lint --fix --offline "$@"' --
+        language: system
+        pass_filenames: true
+        files: .*\.(yml|yaml)$
+        exclude: ^(\.ansible/)

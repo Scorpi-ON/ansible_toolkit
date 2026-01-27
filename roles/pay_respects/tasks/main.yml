@@ -48,13 +48,12 @@
         aur_packages: pay-respects
 
 - name: Add pay-respects to PATH
-  become: true
-  become_user: "{{ pay_respects_user }}"
   block:
     - name: Add pay-respects to PATH (bash)
       ansible.builtin.lineinfile:
-        path: "~/.bashrc"
+        path: "{{ pay_respects_home }}/.bashrc"
         line: "export PATH={{ pay_respects_bin_path }}:$PATH"
+        owner: "{{ pay_respects_user }}"
       when: pay_respects_shell == "/bin/bash"
 
     - name: Add pay-respects to PATH (fish)

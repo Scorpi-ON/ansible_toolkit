@@ -1,0 +1,14 @@
+[project]
+name = "ansible-toolkit"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "ansible-core>=2.20.1",
+]
+
+[dependency-groups]
+dev = [
+    "ansible-lint>=26.1.1",
+    "pre-commit>=4.5.1",
+    "yamllint>=1.38.0",
+]

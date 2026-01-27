@@ -19,7 +19,8 @@
       ansible.builtin.command: "pacman-key --lsign-key {{ chaotic_aur_keyid }}"
       register: chaotic_aur_lsign
       changed_when: >
-        "'locally signed' in (chaotic_aur_lsign.stdout | lower) or 'locally signed' in (chaotic_aur_lsign.stderr | lower)"
+        "'locally signed' in (chaotic_aur_lsign.stdout | lower) "
+        "or 'locally signed' in (chaotic_aur_lsign.stderr | lower)"
 
     - name: Install Chaotic-AUR keyring and mirrorlist
       community.general.pacman:

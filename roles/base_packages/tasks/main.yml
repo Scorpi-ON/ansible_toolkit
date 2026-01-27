@@ -4,11 +4,18 @@
     update_cache: true
   when: base_packages_update_cache | bool
 
-- name: Upgrade installed packages # noqa: package-latest
-  ansible.builtin.package:
-    name: "*"
-    state: latest
+- name: Upgrade installed packages
   when: base_packages_upgrade | bool
+  block:
+    - name: Upgrade installed packages (apt) # noqa: package-latest
+      ansible.builtin.package:
+        name: "*"
+        state: latest
+      when: ansible_facts['pkg_mgr'] == 'apt'
+    - name: Upgrade installed packages (pacman)
+      community.general.pacman:
+        upgrade: true
+      when: ansible_facts['pkg_mgr'] == 'pacman'
 
 - name: Install base packages
   ansible.builtin.package:
