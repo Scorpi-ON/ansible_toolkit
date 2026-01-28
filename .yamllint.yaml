@@ -22,3 +22,5 @@ rules:
 ignore: |
   .git/
   .ansible/
+  .venv/
+  __pycache__/

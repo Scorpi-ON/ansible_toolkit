@@ -1,3 +1,4 @@
-.ansible
-.venv
+.ansible/
+.venv/
+__pycache__/
 inventory/**/secrets.yaml

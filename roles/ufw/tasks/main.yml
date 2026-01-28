@@ -1,0 +1,42 @@
+---
+- name: Install ufw
+  ansible.builtin.package:
+    name: ufw
+
+- name: Validate ufw policies
+  ansible.builtin.assert:
+    that:
+      - ufw_default_incoming in ["allow", "deny", "reject"]
+      - ufw_default_outgoing in ["allow", "deny", "reject"]
+    fail_msg: ufw_default_incoming/ufw_default_outgoing must be one of allow, deny, reject
+
+- name: Set default incoming policy
+  community.general.ufw:
+    policy: "{{ ufw_default_incoming }}"
+    direction: incoming
+  # noqa: args[module]
+
+- name: Set default outgoing policy
+  community.general.ufw:
+    policy: "{{ ufw_default_outgoing }}"
+    direction: outgoing
+  # noqa: args[module]
+
+- name: Configure ufw logging
+  community.general.ufw:
+    logging: "{{ ufw_logging }}"
+
+- name: Configure ufw rules
+  community.general.ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port | default(omit) }}"
+    proto: "{{ item.proto | default(omit) }}"
+    from_ip: "{{ item.from_ip | default(omit) }}"
+    to_ip: "{{ item.to_ip | default(omit) }}"
+    direction: "{{ item.direction | default(omit) }}"
+  loop: "{{ ufw_rules }}"
+  when: ufw_rules | length > 0
+
+- name: Enable ufw
+  community.general.ufw:
+    state: enabled

@@ -1,0 +1,6 @@
+---
+ufw_enabled: true
+ufw_default_incoming: deny
+ufw_default_outgoing: allow
+ufw_logging: low
+ufw_rules: []

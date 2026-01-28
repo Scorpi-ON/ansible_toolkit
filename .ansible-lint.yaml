@@ -1,0 +1,13 @@
+---
+exclude_paths:
+  - .git
+  - .venv/
+  - .ansible/
+  - __pycache__/
+  - .github/
+  - README.md
+  - LICENSE
+  - pyproject.toml
+  - uv.lock
+  - ansible.cfg
+  - .gitignore

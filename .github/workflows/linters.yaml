@@ -1,5 +1,7 @@
 ---
-name: Ansible Lint
+name: Ansible Lint & yamllint
+permissions:
+  contents: read
 
 on:
   push:
@@ -11,7 +13,6 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - "*.example"
-      - ".github/"
   pull_request:
     branches: ["main"]
     paths-ignore:
@@ -21,9 +22,6 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - "*.example"
-      - ".github/"
-permissions:
-  contents: read
 
 jobs:
   lint:
@@ -41,7 +39,10 @@ jobs:
         run: uv sync --frozen
 
       - name: Install Ansible dependencies
-        run: uv run -m ansible-galaxy install -r requirements.yml
+        run: uv run ansible-galaxy install -r requirements.yaml
 
       - name: Run ansible-lint
-        run: uv run -m ansible-lint
+        run: uv run ansible-lint
+
+      - name: Run yamllint
+        run: uv run yamllint .

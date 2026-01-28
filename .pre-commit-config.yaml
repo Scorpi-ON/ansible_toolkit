@@ -1,15 +1,24 @@
 ---
+ci:
+  autoupdate_schedule: monthly
+
 repos:
-  - repo: local
+  - repo: https://github.com/ansible/ansible-lint
+    rev: v26.1.1
     hooks:
       - id: ansible-lint
-        name: ansible-lint (staged Ansible YAML)
-        entry: >
-          bash -c '
-          if [ "$#" -eq 0 ];
-            then exit 0;
-          fi;  ANSIBLE_LINT_NODEPS=1  ANSIBLE_LINT_SKIP_SCHEMA_UPDATE=1  ansible-lint --fix --offline "$@"' --
-        language: system
-        pass_filenames: true
-        files: .*\.(yml|yaml)$
-        exclude: ^(\.ansible/)
+        language_version: python3.14
+        name: ansible-lint
+        args: [--fix]
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        types: [yaml]
+
+  - repo: "https://github.com/astral-sh/uv-pre-commit"
+    rev: 0.9.27
+    hooks:
+      - id: uv-lock
+        name: Update uv.lock

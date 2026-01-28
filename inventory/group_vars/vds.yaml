@@ -13,6 +13,7 @@ base_packages_list:
   - fish
   - zstd
   - keychain
+  - ufw
 
 user_setup_name: "{{ scorpion_user.name }}"
 user_setup_shell: "{{ scorpion_user.shell }}"
@@ -29,3 +30,11 @@ ssh_client_vds_identity_file: "{{ vds.identity_file }}"
 
 sshd_disable_password_auth: true
 sshd_disable_include_conf: true
+
+ufw_default_incoming: deny
+ufw_default_outgoing: allow
+ufw_logging: low
+ufw_rules:
+  - { rule: limit, name: "OpenSSH" } # delete: true to delete rule
+  - { rule: allow, port: "80", proto: tcp }
+  - { rule: allow, port: "443", proto: tcp }
