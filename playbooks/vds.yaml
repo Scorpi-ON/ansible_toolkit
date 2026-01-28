@@ -19,5 +19,6 @@
     - ssh_client
     - sshd
     - ufw
+    - fail2ban
     - chaotic_aur
     - pay_respects

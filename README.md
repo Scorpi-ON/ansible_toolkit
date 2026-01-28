@@ -18,7 +18,7 @@ An Ansible [playbook set](./playbooks) for my personal needs: configuring WSL an
 - [x] Fish shell configs for the user
 - [x] [Pay Respects](https://github.com/iffse/pay-respects) for user's shell (Fish or Bash)
 - [x] client- and server-side SSH setup
-- [x] basic ufw config
+- [x] ufw and Fail2Ban configs
 
 ## Installation and Usage
 

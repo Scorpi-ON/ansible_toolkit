@@ -1,0 +1,8 @@
+---
+fail2ban_sshd_service_name: ssh
+fail2ban_banaction_ufw: false
+fail2ban_logpath: /var/log/auth.log
+fail2ban_bantime: 1d
+fail2ban_findtime: 1h
+fail2ban_maxretry: 3
+fail2ban_allowipv6: false

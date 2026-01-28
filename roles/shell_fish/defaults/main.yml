@@ -1,7 +1,2 @@
 ---
 shell_fish_user: ""
-shell_fish_config_dir: "/home/{{ shell_fish_user }}/.config/fish/"
-shell_fish_files:
-  - { src: config.fish, dest: "{{ shell_fish_config_dir }}" }
-  - { src: fish_prompt.fish, dest: "{{ shell_fish_config_dir }}/functions/" }
-  - { src: fish_right_prompt.fish, dest: "{{ shell_fish_config_dir }}/functions/" }

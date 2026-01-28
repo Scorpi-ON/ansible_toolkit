@@ -2,4 +2,3 @@
 user_setup_name: ""
 user_setup_shell: /bin/bash
 user_setup_groups: []
-user_setup_sudo: true

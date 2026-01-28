@@ -1,0 +1,14 @@
+[DEFAULT]
+{% if fail2ban_banaction_ufw | bool %}
+banaction = ufw
+{% endif %}
+bantime = {{ fail2ban_bantime }}
+findtime = {{ fail2ban_findtime }}
+maxretry = {{ fail2ban_maxretry }}
+allowipv6 = {{ fail2ban_allowipv6 }}
+
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = {{ fail2ban_logpath }}

@@ -2,5 +2,3 @@
 sshd_disable_password_auth: true
 sshd_disable_include_conf: false
 sshd_service_name: ssh
-sshd_config_path: /etc/ssh/sshd_config
-sshd_validate_cmd: sshd -t -f %s

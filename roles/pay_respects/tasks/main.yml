@@ -1,64 +1,63 @@
 ---
-- name: Ensure pay_respects_user is set
-  ansible.builtin.assert:
-    that: pay_respects_user | length > 0
-    fail_msg: pay_respects_user is required
-
-- name: Ensure pay-respects paths are set
-  ansible.builtin.assert:
-    that:
-      - pay_respects_url | length > 0
-      - pay_respects_install_script | length > 0
-      - pay_respects_bin_path | length > 0
-    fail_msg: pay_respects_url, pay_respects_install_script, and pay_respects_bin_path are required
-
-- name: Ensure pay_respects_shell is allowed
-  ansible.builtin.assert:
-    that: pay_respects_shell in ["/bin/bash", "/bin/fish"]
-    fail_msg: pay_respects_shell should be either /bin/bash or /bin/fish
-
-- name: Install pay-respects on Ubuntu/Debian
-  when: ansible_facts['pkg_mgr'] == 'apt'
+- name: Block
+  vars:
+    pay_respects_home: "/home/{{ pay_respects_user }}"
+    pay_respects_bin_path: "{{ pay_respects_home }}/.local/bin"
+    pay_respects_url: https://raw.githubusercontent.com/iffse/pay-respects/main/install.sh
+    pay_respects_install_script: /tmp/pay-respects-install.sh
   block:
-    - name: Install apt-file and zstd
-      ansible.builtin.package:
-        name: [apt-file, zstd]
-      notify: Update apt-file cache
+    - name: Ensure pay_respects_user is set
+      ansible.builtin.assert:
+        that: pay_respects_user | length > 0
+        fail_msg: pay_respects_user is required
 
-    - name: Download pay-respects install script
-      ansible.builtin.get_url:
-        url: "{{ pay_respects_url }}"
-        dest: "{{ pay_respects_install_script }}"
-        mode: "0755"
+    - name: Ensure pay_respects_shell is allowed
+      ansible.builtin.assert:
+        that: pay_respects_shell in ["/bin/bash", "/bin/fish"]
+        fail_msg: pay_respects_shell should be either /bin/bash or /bin/fish
 
-    - name: Install pay-respects
-      become: true
-      become_user: "{{ pay_respects_user }}"
-      ansible.builtin.command: sh "{{ pay_respects_install_script }}"
-      args:
-        creates: "{{ pay_respects_bin_path }}/pay-respects"
+    - name: Install pay-respects on Ubuntu/Debian
+      when: ansible_facts['pkg_mgr'] == 'apt'
+      block:
+        - name: Install apt-file and zstd
+          ansible.builtin.package:
+            name: [apt-file, zstd]
+          notify: Update apt-file cache
 
-- name: Install pay-respects on Arch Linux
-  when: ansible_facts['pkg_mgr'] == 'pacman'
-  block:
-    - name: Install pay-respects
-      ansible.builtin.include_role:
-        name: jahrik.yay
-      vars:
-        aur_packages: pay-respects
+        - name: Download pay-respects install script
+          ansible.builtin.get_url:
+            url: "{{ pay_respects_url }}"
+            dest: "{{ pay_respects_install_script }}"
+            mode: "0755"
 
-- name: Add pay-respects to PATH
-  block:
-    - name: Add pay-respects to PATH (bash)
-      ansible.builtin.lineinfile:
-        path: "{{ pay_respects_home }}/.bashrc"
-        line: "export PATH={{ pay_respects_bin_path }}:$PATH"
-        owner: "{{ pay_respects_user }}"
-      when: pay_respects_shell == "/bin/bash"
+        - name: Install pay-respects
+          become: true
+          become_user: "{{ pay_respects_user }}"
+          ansible.builtin.command: sh "{{ pay_respects_install_script }}"
+          args:
+            creates: "{{ pay_respects_bin_path }}/pay-respects"
 
-    - name: Add pay-respects to PATH (fish)
-      ansible.builtin.command: fish -c "fish_add_path {{ pay_respects_bin_path }}"
-      register: pay_respects_cmd_result
-      changed_when: pay_respects_cmd_result.rc == 0
-      failed_when: false
-      when: pay_respects_shell == "/bin/fish"
+    - name: Install pay-respects on Arch Linux
+      when: ansible_facts['pkg_mgr'] == 'pacman'
+      block:
+        - name: Install pay-respects
+          ansible.builtin.include_role:
+            name: jahrik.yay
+          vars:
+            aur_packages: pay-respects
+
+    - name: Add pay-respects to PATH
+      block:
+        - name: Add pay-respects to PATH (bash)
+          ansible.builtin.lineinfile:
+            path: "{{ pay_respects_home }}/.bashrc"
+            line: "export PATH={{ pay_respects_bin_path }}:$PATH"
+            owner: "{{ pay_respects_user }}"
+          when: pay_respects_shell == "/bin/bash"
+
+        - name: Add pay-respects to PATH (fish)
+          ansible.builtin.command: fish -c "fish_add_path {{ pay_respects_bin_path }}"
+          register: pay_respects_cmd_result
+          changed_when: pay_respects_cmd_result.rc == 0
+          failed_when: false
+          when: pay_respects_shell == "/bin/fish"

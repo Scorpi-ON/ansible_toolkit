@@ -14,6 +14,7 @@ base_packages_list:
   - zstd
   - keychain
   - ufw
+  - fail2ban
 
 user_setup_name: "{{ scorpion_user.name }}"
 user_setup_shell: "{{ scorpion_user.shell }}"
@@ -30,6 +31,10 @@ ssh_client_vds_identity_file: "{{ vds.identity_file }}"
 
 sshd_disable_password_auth: true
 sshd_disable_include_conf: true
+sshd_service_name: ssh
+
+fail2ban_sshd_service_name: ssh
+fail2ban_banaction_ufw: true
 
 ufw_default_incoming: deny
 ufw_default_outgoing: allow

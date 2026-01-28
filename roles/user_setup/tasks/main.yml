@@ -17,4 +17,3 @@
     name: "{{ user_setup_name }}"
     user: "{{ user_setup_name }}"
     commands: ALL
-  when: user_setup_sudo | bool

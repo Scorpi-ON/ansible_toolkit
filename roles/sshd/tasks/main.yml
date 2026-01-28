@@ -1,26 +1,28 @@
 ---
-- name: Ensure sshd configuration settings are set
-  ansible.builtin.assert:
-    that:
-      - sshd_config_path | length > 0
-      - sshd_service_name | length > 0
-      - sshd_validate_cmd | length > 0
-    fail_msg: sshd_config_path, sshd_service_name, and sshd_validate_cmd are required
+- name: Block
+  vars:
+    sshd_config_path: /etc/ssh/sshd_config
+    sshd_validate_cmd: sshd -t -f %s
+  block:
+    - name: Ensure sshd configuration settings are set
+      ansible.builtin.assert:
+        that: sshd_service_name | length > 0
+        fail_msg: sshd_service_name is required
 
-- name: Disable SSH password authentication
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_path }}"
-    regexp: "^(#\\s*)?PasswordAuthentication\\s+\\S+"
-    line: PasswordAuthentication no
-    validate: "{{ sshd_validate_cmd }}"
-  notify: Restart SSH
-  when: sshd_disable_password_auth | bool
+    - name: Disable SSH password authentication
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_path }}"
+        regexp: "^(#\\s*)?PasswordAuthentication\\s+\\S+"
+        line: PasswordAuthentication no
+        validate: "{{ sshd_validate_cmd }}"
+      notify: Restart SSH
+      when: sshd_disable_password_auth | bool
 
-- name: Disable sshd_config.d include
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_path }}"
-    search_string: "Include /etc/ssh/sshd_config.d/*.conf"
-    line: "# Include /etc/ssh/sshd_config.d/*.conf"
-    validate: "{{ sshd_validate_cmd }}"
-  notify: Restart SSH
-  when: sshd_disable_include_conf | bool
+    - name: Disable sshd_config.d include
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_path }}"
+        search_string: "Include /etc/ssh/sshd_config.d/*.conf"
+        line: "# Include /etc/ssh/sshd_config.d/*.conf"
+        validate: "{{ sshd_validate_cmd }}"
+      notify: Restart SSH
+      when: sshd_disable_include_conf | bool
