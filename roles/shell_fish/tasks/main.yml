@@ -1,22 +1,27 @@
 ---
 - name: Block
   vars:
-    shell_fish_config_dir: "/home/{{ shell_fish_user }}/.config/fish/"
+    shell_fish_config_dir: "{{ shell_fish_home }}/.config/fish"
     shell_fish_files:
-      - { src: config.fish, dest: "{{ shell_fish_config_dir }}" }
-      - { src: fish_prompt.fish, dest: "{{ shell_fish_config_dir }}/functions/" }
-      - { src: fish_right_prompt.fish, dest: "{{ shell_fish_config_dir }}/functions/" }
+      - src: config.fish
+        dest: "{{ shell_fish_config_dir }}"
+      - src: fish_prompt.fish
+        dest: "{{ shell_fish_config_dir }}/functions/"
+      - src: fish_right_prompt.fish
+        dest: "{{ shell_fish_config_dir }}/functions/"
   block:
-    - name: Ensure fish user is set
+    - name: Ensure fish user and fish home are set
       ansible.builtin.assert:
-        that: shell_fish_user | length > 0
-        fail_msg: shell_fish_user is required
+        that:
+          - shell_fish_user | length > 0
+          - shell_fish_home | length > 0
+        fail_msg: shell_fish_user and shell_fish_home are required
 
     - name: Ensure fish package is installed
       ansible.builtin.package:
         name: fish
 
-    - name: Copy fish config files
+    - name: Copy fish files
       ansible.builtin.copy:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"

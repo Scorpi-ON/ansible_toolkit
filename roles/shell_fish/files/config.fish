@@ -2,18 +2,31 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-set -g fish_greeting  # отключить ненужное приветствие fish
+set -g fish_greeting  # Disable unneeded fish greeting
 
-pay-respects fish --alias | source
-zoxide init fish | source
-direnv hook fish | source
-
-abbr -a trm trash
-abbr -a cd z
-abbr -a py python3
-
-eval (ssh-agent -c) > /dev/null  # настройка SSH-агента
-if not set -q SSH_CONNECTION
-    set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
+if type -q pay-respects
+    pay-respects fish --alias | source
 end
-eval (keychain --eval --quiet)
+
+if type -q zoxide
+    zoxide init fish | source
+    abbr -a cd z
+end
+
+if type -q direnv
+    direnv hook fish | source
+end
+
+if type -q trash
+    abbr -a trm trash
+else if type -q trash-put
+    abbr -a trm trash-put
+end
+
+if type -q python3
+    abbr -a py python3
+end
+
+if type -q keychain
+    eval (keychain --eval --quiet)
+end

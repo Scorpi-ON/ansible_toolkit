@@ -1,4 +1,5 @@
 ---
 user_setup_name: ""
+user_setup_home: ""
 user_setup_shell: /bin/bash
 user_setup_groups: []

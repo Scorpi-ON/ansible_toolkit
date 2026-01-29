@@ -1,6 +1,9 @@
 ---
 roles:
   - name: jahrik.yay
+  - name: geerlingguy.docker
+    version: "8.0.0"
 
 collections:
   - name: community.general
+    version: ">=12.3.0,<13"

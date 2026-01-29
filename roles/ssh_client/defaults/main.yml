@@ -1,5 +1,5 @@
 ---
 ssh_client_user: ""
-ssh_client_vds_host: ""
-ssh_client_vds_user: ""
-ssh_client_vds_identity_file: ""
+ssh_client_home: ""
+ssh_client_copy_local: false
+ssh_client_local_ssh_dir: "{{ lookup('env', 'HOME') + '/.ssh' }}"

@@ -1,0 +1,24 @@
+---
+- name: WSL setup
+  hosts: wsl_arch
+  become: true
+
+  pre_tasks:
+    - name: Assert WSL playbook runs on Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['os_family'] == 'Archlinux'
+        fail_msg: >-
+          WSL playbook supports only Arch Linux. Detected
+          {{ ansible_facts['distribution'] }} (os_family={{ ansible_facts['os_family'] }}).
+
+    - name: Generate locale
+      community.general.locale_gen:
+        name: [en_US.UTF-8]
+
+  roles:
+    - base_packages
+    - user_setup
+    - shell_fish
+    - ssh_client
+    - chaotic_aur

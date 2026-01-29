@@ -1,9 +1,4 @@
 ---
-- name: Restart SSH
-  ansible.builtin.service:
-    name: "{{ fail2ban_sshd_service_name }}"
-    state: restarted
-
 - name: Start and autostart Fail2Ban
   ansible.builtin.service:
     name: fail2ban

@@ -1,14 +1,17 @@
 ---
-- name: Ensure username is set
+- name: Ensure username and user home dir are set
   ansible.builtin.assert:
-    that: user_setup_name | length > 0
-    fail_msg: user_setup_name is required
+    that:
+      - user_setup_name | length > 0
+      - user_setup_home | length > 0
+    fail_msg: user_setup_name and user_setup_home are required
 
 - name: Create user
   ansible.builtin.user:
     name: "{{ user_setup_name }}"
     shell: "{{ user_setup_shell }}"
     groups: "{{ user_setup_groups }}"
+    home: "{{ user_setup_home }}"
     append: true
     create_home: true
 
@@ -17,3 +20,4 @@
     name: "{{ user_setup_name }}"
     user: "{{ user_setup_name }}"
     commands: ALL
+    nopassword: false

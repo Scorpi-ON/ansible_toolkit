@@ -1,15 +1,16 @@
 ---
 - name: Block
   vars:
-    pay_respects_home: "/home/{{ pay_respects_user }}"
     pay_respects_bin_path: "{{ pay_respects_home }}/.local/bin"
     pay_respects_url: https://raw.githubusercontent.com/iffse/pay-respects/main/install.sh
     pay_respects_install_script: /tmp/pay-respects-install.sh
   block:
-    - name: Ensure pay_respects_user is set
+    - name: Ensure pay_respects_user and pay_respects_home are set
       ansible.builtin.assert:
-        that: pay_respects_user | length > 0
-        fail_msg: pay_respects_user is required
+        that:
+          - pay_respects_user | length > 0
+          - pay_respects_home | length > 0
+        fail_msg: pay_respects_user and pay_respects_home are required
 
     - name: Ensure pay_respects_shell is allowed
       ansible.builtin.assert:

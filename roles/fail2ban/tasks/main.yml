@@ -2,7 +2,6 @@
 - name: Install Fail2Ban
   ansible.builtin.package:
     name: fail2ban
-  notify: Restart SSH
 
 - name: Config fail2ban
   ansible.builtin.template:

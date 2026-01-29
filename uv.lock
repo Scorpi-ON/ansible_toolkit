@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = "==3.14"
+requires-python = "==3.14.*"
 
 [[package]]
 name = "ansible-compat"
@@ -63,7 +63,7 @@ wheels = [
 
 [[package]]
 name = "ansible-toolkit"
-version = "1.0.0"
+version = "1.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "ansible-core" },

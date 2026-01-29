@@ -15,7 +15,7 @@
 
     - name: Receive Chaotic-AUR key (if missing)
       ansible.builtin.command: >
-        "pacman-key --recv-key {{ chaotic_aur_keyid }} --keyserver {{ chaotic_aur_keyserver }}"
+        pacman-key --recv-key {{ chaotic_aur_keyid }} --keyserver {{ chaotic_aur_keyserver }}
       register: chaotic_aur_key_receive
       changed_when: >-
         'not changed' in chaotic_aur_key_receive.stdout

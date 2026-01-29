@@ -4,6 +4,7 @@ hostname: scorpion-hostvds
 base_packages_list:
   - sudo
   - micro
+  - less
   - curl
   - git
   - thefuck
@@ -15,19 +16,6 @@ base_packages_list:
   - keychain
   - ufw
   - fail2ban
-
-user_setup_name: "{{ scorpion_user.name }}"
-user_setup_shell: "{{ scorpion_user.shell }}"
-user_setup_groups: "{{ scorpion_user.groups }}"
-shell_fish_user: "{{ scorpion_user.name }}"
-
-pay_respects_user: "{{ scorpion_user.name }}"
-pay_respects_shell: "{{ scorpion_user.shell }}"
-
-ssh_client_user: "{{ scorpion_user.name }}"
-ssh_client_vds_host: "{{ vds.host }}"
-ssh_client_vds_user: "{{ scorpion_user.name }}"
-ssh_client_vds_identity_file: "{{ vds.identity_file }}"
 
 sshd_disable_password_auth: true
 sshd_disable_include_conf: true
@@ -43,3 +31,6 @@ ufw_rules:
   - { rule: limit, name: "OpenSSH" } # delete: true to delete rule
   - { rule: allow, port: "80", proto: tcp }
   - { rule: allow, port: "443", proto: tcp }
+
+docker_users: []
+docker_add_repo: true

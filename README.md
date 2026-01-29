@@ -9,10 +9,10 @@
 [![Ansible Lint & yamllint checks](https://github.com/Scorpi-ON/ansible_toolkit/actions/workflows/linters.yaml/badge.svg)](https://github.com/Scorpi-ON/ansible_toolkit/actions/workflows/linters.yaml)
 [![CodeQL (GH Actions)](https://github.com/Scorpi-ON/ansible_toolkit/actions/workflows/codeql.yaml/badge.svg)](https://github.com/Scorpi-ON/ansible_toolkit/actions/workflows/codeql.yaml)
 
-An Ansible [playbook set](./playbooks) for my personal needs: configuring WSL and a single VDS server.
+An Ansible [playbook set](./playbooks) for my personal needs: configuring WSL (Arch Linux) and a single VDS server (Ubuntu/Debian).
 
 ## What's inside
-- [x] package installation (support for Ubuntu/Debian and Arch Linux)
+- [x] package installation and Docker setup
 - [x] connection of AUR and Chaotic-AUR for Arch Linux
 - [x] non-root user setup
 - [x] Fish shell configs for the user
@@ -52,7 +52,8 @@ ansible-galaxy install -r requirements.yaml
 5. Run playbooks with:
 
 ```shell
-ansible-playbook playbooks/<PLAYBOOK_FILE>
+ansible-playbook -u root playbooks/<PLAYBOOK_FILE>  # if the user has not been created yet 
+ansible-playbook playbooks/<PLAYBOOK_FILE> --ask-become-pass
 ```
 
 ## Development

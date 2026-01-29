@@ -29,6 +29,7 @@
 - name: Configure ufw rules
   community.general.ufw:
     rule: "{{ item.rule }}"
+    name: "{{ item.name | default(omit) }}"
     port: "{{ item.port | default(omit) }}"
     proto: "{{ item.proto | default(omit) }}"
     from_ip: "{{ item.from_ip | default(omit) }}"

@@ -1,0 +1,33 @@
+---
+- name: VDS setup
+  hosts: vds_deb
+  become: true
+
+  pre_tasks:
+    - name: Assert VDS playbook runs on Debian or Ubuntu
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['os_family'] == 'Debian'
+          - ansible_facts['distribution'] in ['Debian', 'Ubuntu']
+        fail_msg: >-
+          VDS playbook supports only Debian/Ubuntu. Detected
+          {{ ansible_facts['distribution'] }} (os_family={{ ansible_facts['os_family'] }}).
+
+    - name: Set a hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
+
+    - name: Set a timezone
+      community.general.timezone:
+        name: "{{ timezone_name }}"
+
+  roles:
+    - base_packages
+    - user_setup
+    - geerlingguy.docker
+    - shell_fish
+    - sshd
+    - ufw
+    - fail2ban
+    - chaotic_aur
+    - pay_respects

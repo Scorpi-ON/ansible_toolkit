@@ -1,8 +1,28 @@
 ---
-ansible_user: root
+ansible_user: "{{ scorpion_user.name }}"
 
 timezone_name: Europe/Moscow
 scorpion_user:
   name: scorpion
+  home: /home/scorpion
   shell: /bin/fish
-  groups: [docker]
+  groups: []
+base_packages_upgrade: true
+
+user_setup_name: "{{ scorpion_user.name }}"
+user_setup_home: "{{ scorpion_user.home }}"
+user_setup_shell: "{{ scorpion_user.shell }}"
+user_setup_groups: "{{ scorpion_user.groups }}"
+
+shell_fish_user: "{{ scorpion_user.name }}"
+shell_fish_home: "{{ scorpion_user.home }}"
+
+pay_respects_user: "{{ scorpion_user.name }}"
+pay_respects_home: "{{ scorpion_user.home }}"
+pay_respects_shell: "{{ scorpion_user.shell }}"
+
+ssh_client_user: "{{ scorpion_user.name }}"
+ssh_client_home: "{{ scorpion_user.home }}"
+ssh_client_vds_host: "{{ vds.host }}"
+ssh_client_vds_user: "{{ scorpion_user.name }}"
+ssh_client_vds_identity_file: "{{ vds.identity_file }}"
